@@ -1,22 +1,25 @@
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@mui/system';
 import Header from './ui/Header/Header';
+import Footer from './ui/Footer/Footer';
 import theme from '../styles/jss/themes/AppTheme';
+import LandingPage from './LandingPage';
 
 function App() {
+  const [selectedIndex, setSelectedIndex] = React.useState(undefined);
+  const [tabValue, setTabValue] = React.useState(0);
+
   return (
     <ThemeProvider theme={theme}>
-      <Header />
+      <Header
+        tabValue={tabValue}
+        setTabValue={setTabValue}
+        selectedIndex={selectedIndex}
+        setSelectedIndex={setSelectedIndex}
+      />
       <Routes>
-        <Route
-          exact
-          path='/'
-          element={
-            <div>
-              <span>Home</span>
-            </div>
-          }
-        />
+        <Route exact path='/' element={<LandingPage />} />
         <Route
           exact
           path='/services'
@@ -90,6 +93,12 @@ function App() {
           }
         />
       </Routes>
+      <Footer
+        tabValue={tabValue}
+        setTabValue={setTabValue}
+        selectedIndex={selectedIndex}
+        setSelectedIndex={setSelectedIndex}
+      />
     </ThemeProvider>
   );
 }

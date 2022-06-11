@@ -1,32 +1,41 @@
 import React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import { Link } from 'react-router-dom';
-import { HeaderButton } from '../../../styles/jss/styles/header';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import { HeaderButton, StyledDrawer } from '../../../styles/jss/styles/header';
+import {
+  AppBar,
+  Toolbar,
+  Tabs,
+  Tab,
+  List,
+  ListItem,
+  ListItemText,
+  MenuItem,
+  Box,
+  Button,
+  IconButton,
+} from '@mui/material';
 // utils and services
 import { ElevationScroll } from './header-service';
-import { Box, Button } from '@mui/material';
 import logo from '../../../assets/logo.svg';
-
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material';
+import { MenuSharp } from '@mui/icons-material';
 // styles
 import { useStyles, StyledMenu } from '../../../styles/jss/styles/header';
+import { paths, servicesPaths } from './headerConfiguration';
 
-const Header = (props) => {
+const Header = ({ tabValue, setTabValue, selectedIndex, setSelectedIndex }) => {
   const { classes } = useStyles();
-  const servicesPaths = [
-    { path: '/services', label: 'Services' },
-    { path: '/mobileApps', label: 'Mobile App Development' },
-    { path: '/websites', label: 'Website Development' },
-    { path: '/customSoftware', label: 'Custom Software Development' },
-  ];
-  const [tabValue, setTabValue] = React.useState(0);
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down('md'));
+
+  const [openDrawer, setOpenDrawer] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const [selectedIndex, setSelectedIndex] = React.useState(undefined);
+  const iOS =
+    window.process &&
+    window.process.browser &&
+    /iPad|iPhone|iPod/.test(navigator.userAgent);
 
   const handleChange = (event, value) => {
     setTabValue(value);
@@ -45,13 +54,18 @@ const Header = (props) => {
     setAnchorEl(null);
   };
 
+  const handleServiceTabProps = () => {
+    return {
+      'aria-owns': anchorEl ? 'simple-menu' : undefined,
+      'aria-haspopup': anchorEl ? 'menu' : undefined,
+      onMouseOver: (e) => handleClick(e),
+    };
+  };
+
   React.useEffect(() => {
     if (window.location.pathname === '/' && tabValue !== 0) {
       setTabValue(0);
-    } else if (
-      servicesPaths.find((x) => x.path === window.location.pathname) &&
-      tabValue !== 1
-    ) {
+    } else if (servicesPaths.find((x) => x.path === window.location.pathname)) {
       setSelectedIndex(
         servicesPaths.map((x) => x.path).indexOf(window.location.pathname)
       );
@@ -65,12 +79,125 @@ const Header = (props) => {
     } else if (window.location.pathname === '/estimate' && tabValue !== 5) {
       setTabValue(5);
     }
-  }, [tabValue]);
+  }, [tabValue, selectedIndex]);
+
+  const tabs = (
+    <React.Fragment>
+      <Tabs
+        value={tabValue}
+        className={classes.tabContainer}
+        onChange={handleChange}
+        TabIndicatorProps={{
+          sx: {
+            backgroundColor: 'common.white',
+            height: '2px',
+          },
+        }}
+      >
+        {paths.slice(0, paths.length - 1).map((route, index) => (
+          <Tab
+            key={'tab' + index}
+            label={<span className={classes.tab}>{route.label}</span>}
+            component={Link}
+            to={route.path}
+            {...(route.path === '/services' && handleServiceTabProps())}
+          />
+        ))}
+      </Tabs>
+      <Link
+        to='/estimate'
+        onClick={() => setTabValue(5)}
+        style={{ textDecoration: 'none' }}
+      >
+        <HeaderButton variant='contained' color='secondary'>
+          Free Estimate
+        </HeaderButton>
+      </Link>
+      <StyledMenu
+        id='simple-menu'
+        sx={{ zIndex: theme.zIndex.modal + 2 }}
+        anchorEl={anchorEl}
+        open={open}
+        keepMounted
+        onClose={handleClose}
+        MenuListProps={{
+          onMouseLeave: handleClose,
+        }}
+      >
+        {servicesPaths.map((option, index) => (
+          <MenuItem
+            key={option.path}
+            onClick={(e) => {
+              handleMenuItemClick(e, index);
+              setTabValue(1);
+              handleClose();
+            }}
+            component={Link}
+            to={option.path}
+            selected={index === selectedIndex && tabValue === 1}
+          >
+            {option.label}
+          </MenuItem>
+        ))}
+      </StyledMenu>
+    </React.Fragment>
+  );
+
+  const drawer = (
+    <React.Fragment>
+      <StyledDrawer
+        disableBackdropTransition={!iOS}
+        disableDiscovery={iOS}
+        open={openDrawer}
+        onClose={(e) => setOpenDrawer(false)}
+        onOpen={(e) => setOpenDrawer(true)}
+      >
+        <div className='toolbarSeparator' />
+        <List
+          disablePadding
+          sx={{ width: '280px', backgroundColor: theme.palette.common.blue }}
+        >
+          {paths.map((path, index) => (
+            <ListItem
+              key={path.label}
+              onClick={(e) => {
+                setOpenDrawer(false);
+                setTabValue(index);
+              }}
+              divider
+              button
+              component={Link}
+              to={path.path}
+              selected={tabValue === index}
+              className={`${
+                index === paths.length - 1 ? 'drawerItem-estimate' : ''
+              }`}
+            >
+              <ListItemText disableTypography>{path.label}</ListItemText>
+            </ListItem>
+          ))}
+        </List>
+      </StyledDrawer>
+      <IconButton
+        className={classes.drawerIconWrapper}
+        onClick={(e) => setOpenDrawer(!openDrawer)}
+        disableRipple
+      >
+        <MenuSharp className={classes.drawerIcon} />
+      </IconButton>
+    </React.Fragment>
+  );
 
   return (
     <React.Fragment>
       <ElevationScroll>
-        <AppBar position='fixed' color='primary'>
+        <AppBar
+          position='fixed'
+          color='primary'
+          sx={{
+            zIndex: theme.zIndex.modal + 1,
+          }}
+        >
           <Toolbar disableGutters>
             <Button
               component={Link}
@@ -81,81 +208,7 @@ const Header = (props) => {
             >
               <img src={logo} alt='company logo' className={classes.logo} />
             </Button>
-            <Tabs
-              value={tabValue}
-              className={classes.tabContainer}
-              onChange={handleChange}
-              TabIndicatorProps={{
-                sx: {
-                  backgroundColor: 'common.white',
-                  height: '2px',
-                },
-              }}
-            >
-              <Tab
-                label={<span className={classes.tab}>home</span>}
-                component={Link}
-                to='/'
-              />
-              <Tab
-                aria-owns={anchorEl ? 'simple-menu' : undefined}
-                aria-haspopup={anchorEl ? 'menu' : undefined}
-                label={<span className={classes.tab}>services</span>}
-                component={Link}
-                onMouseOver={(e) => handleClick(e)}
-                to='/services'
-              />
-              <Tab
-                label={<span className={classes.tab}>the revolution</span>}
-                component={Link}
-                to='/revolution'
-              />
-              <Tab
-                label={<span className={classes.tab}>about us</span>}
-                component={Link}
-                to='/about'
-              />
-              <Tab
-                label={<span className={classes.tab}>contact us</span>}
-                component={Link}
-                to='/contact'
-              />
-            </Tabs>
-            <Link
-              to='/estimate'
-              onClick={() => setTabValue(5)}
-              style={{ textDecoration: 'none' }}
-            >
-              <HeaderButton variant='contained' color='secondary'>
-                Free Estimate
-              </HeaderButton>
-            </Link>
-            <StyledMenu
-              id='simple-menu'
-              anchorEl={anchorEl}
-              open={open}
-              keepMounted
-              onClose={handleClose}
-              MenuListProps={{
-                onMouseLeave: handleClose,
-              }}
-            >
-              {servicesPaths.map((option, index) => (
-                <MenuItem
-                  key={option.path}
-                  onClick={(e) => {
-                    handleMenuItemClick(e, index);
-                    setTabValue(1);
-                    handleClose();
-                  }}
-                  component={Link}
-                  to={option.path}
-                  selected={index === selectedIndex && tabValue === 1}
-                >
-                  {option.label}
-                </MenuItem>
-              ))}
-            </StyledMenu>
+            {matches ? drawer : tabs}
           </Toolbar>
         </AppBar>
       </ElevationScroll>

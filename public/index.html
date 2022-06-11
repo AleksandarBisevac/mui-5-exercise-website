@@ -18,18 +18,28 @@
     />
     <title>ABC Development</title>
   </head>
+  <style media="all">
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+    }
+    #root {
+      min-height: 100vh;
+      height: 100%;
+      width: 100vw;
+      position: relative;
+      padding-bottom: 235px;
+      @media (max-width: 600px) {
+        padding-bottom: 0;
+      }
+    }
+  </style>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>

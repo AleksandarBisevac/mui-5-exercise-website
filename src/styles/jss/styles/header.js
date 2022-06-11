@@ -1,6 +1,12 @@
 import { withTheme } from '@emotion/react';
-import { alpha, Button, Menu, MenuItem, styled } from '@mui/material';
-import { Link } from 'react-router-dom';
+import {
+  alpha,
+  Button,
+  Menu,
+  MenuItem,
+  styled,
+  SwipeableDrawer,
+} from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 
 export const useStyles = makeStyles()((theme) => {
@@ -9,10 +15,13 @@ export const useStyles = makeStyles()((theme) => {
       // ovo radimo kako bismo pomerili glavni sadržaj ispod header-a koji je fiksno pozicioniran
       ...theme.mixins.toolbar,
       marginBottom: '2rem',
+      [theme.breakpoints.down('lg')]: { marginBottom: '0.5rem' },
+      [theme.breakpoints.down('sm')]: { marginBottom: '1rem' },
     },
     logo: {
       fontFamily: 'Raleway',
       height: '6rem',
+      [theme.breakpoints.down('lg')]: { height: '4rem' },
     },
     tabContainer: {
       marginLeft: 'auto',
@@ -20,6 +29,17 @@ export const useStyles = makeStyles()((theme) => {
     tab: {
       ...theme.typography.tab,
       color: theme.palette.common.white,
+    },
+    drawerIconWrapper: {
+      marginLeft: 'auto !important',
+      '&:hover': {
+        backgroundColor: 'transparent',
+      },
+    },
+    drawerIcon: {
+      height: '30px !important',
+      width: '30px !important',
+      marginRight: '15px',
     },
   };
 });
@@ -74,3 +94,39 @@ export const StyledMenu = styled((props) => <Menu elevation={0} {...props} />)(
     },
   })
 );
+
+export const StyledDrawer = styled((props) => (
+  <SwipeableDrawer keepMounted {...props} />
+))(({ theme }) => ({
+  '.toolbarSeparator': {
+    marginTop: '4rem',
+  },
+  '& 	.MuiDrawer-paperAnchorLeft': {
+    minWidth: 180,
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+    color:
+      theme.palette.mode === 'light'
+        ? theme.palette.grey[300]
+        : theme.palette.common.blue,
+    backgroundColor: theme.palette.primary.main,
+  },
+  '& .MuiList-root': {
+    width: '100%',
+  },
+  '& .MuiListItem-root': {
+    ...theme.typography.tab,
+    textAlign: 'start',
+    padding: '1rem',
+  },
+  '& .drawerItem-estimate': {
+    backgroundColor: theme.palette.common.orange,
+    textWeight: '900',
+    letterSpacing: 2,
+  },
+  '& .Mui-selected': {
+    backgroundColor: theme.palette.common.blueSelected,
+    opacity: 1,
+  },
+}));
