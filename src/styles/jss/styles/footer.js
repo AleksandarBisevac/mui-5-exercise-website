@@ -3,7 +3,7 @@ import { styled, withTheme } from '@mui/material';
 export const StyledFooter = styled((props) => <footer {...props} />)(
   ({ theme }) => ({
     backgroundColor: theme.palette.common.blue,
-    width: '100%',
+    width: '100vw',
     position: 'absolute',
     bottom: 0,
     zIndex: theme.zIndex.modal + 2,

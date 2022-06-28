@@ -35,5 +35,29 @@ export default createTheme({
       fontSize: '0.8rem',
       [breakpoints.up('lg')]: { fontSize: '1rem', letterSpacing: 2 },
     },
+    estimate: {
+      fontFamily: 'Pacifico',
+      fontSize: '1rem',
+      textTransform: 'none',
+      color: 'white',
+    },
+    h2: {
+      fontFamily: 'Raleway',
+      fontSize: '2.5rem',
+      color: abcBlue,
+      fontWeight: 700,
+      lineHeight: 1.5,
+    },
+    h3: {
+      fontFamily: 'Pacifico',
+      fontSize: '2.5rem',
+      color: abcBlue,
+    },
+    h4: {
+      fontFamily: 'Raleway',
+      fontSize: '1.75rem',
+      color: abcBlue,
+      fontWeight: 700,
+    },
   },
 });
