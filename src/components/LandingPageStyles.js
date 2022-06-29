@@ -39,16 +39,63 @@ export const classes = (theme) => {
         backgroundColor: theme.palette.secondary.light,
       },
     },
-    learnButton: {
-      color: theme.palette.common.blue,
-      borderColor: theme.palette.common.blue,
-      borderWidth: '2px',
-      textTransform: 'none',
-      borderRadius: '50px',
-      fontFamily: 'Roboto',
+    learnButtonHero: {
+      ...theme.typography.learnButton,
       fontSize: '0.9rem',
       height: '45px',
       width: '145px',
+    },
+
+    serviceContainerStyle: {
+      marginTop: '12em',
+      [theme.breakpoints.down('md')]: {
+        padding: '25px',
+      },
+    },
+
+    learnButton: {
+      ...theme.typography.learnButton,
+      fontSize: '0.7rem',
+      height: '35px',
+      padding: '5px',
+      [theme.breakpoints.down('md')]: {
+        margin: '2em 0',
+      },
+    },
+    subtitle: {
+      marginBottom: '1em',
+    },
+    specialText: {
+      fontFamily: 'Pacifico',
+      color: theme.palette.common.orange,
+    },
+    icon: {
+      marginLeft: '2em',
+      [theme.breakpoints.down('sm')]: {
+        marginLeft: '0px',
+      },
+    },
+    revolutionCard: {
+      position: 'absolute',
+      boxShadow: theme.shadows[10],
+      borderRadius: '15px',
+      padding: '10em',
+      margin: '0 5em',
+      [theme.breakpoints.down('md')]: {
+        padding: '10em 5em',
+      },
+      [theme.breakpoints.down('sm')]: {
+        paddingTop: '8em',
+        paddingBottom: '8em',
+        paddingLeft: 0,
+        paddingRight: 0,
+        borderRadius: 0,
+        width: '100%',
+        margin: 0,
+      },
+    },
+    informationBlock: {
+      position: 'absolute',
     },
   };
 };

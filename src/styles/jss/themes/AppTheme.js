@@ -8,6 +8,7 @@ const abcBlueSelected = '#0e619a';
 const abcOrange = '#FFBA60';
 const abcWhite = '#FFF';
 const abcBlack = '#000';
+const abcGrey = '#868686';
 export default createTheme({
   palette: {
     common: {
@@ -58,6 +59,25 @@ export default createTheme({
       fontSize: '1.75rem',
       color: abcBlue,
       fontWeight: 700,
+    },
+    subtitle1: {
+      fontSize: '1.25rem',
+      fontWeight: 300,
+      color: abcGrey,
+    },
+    subtitle2: {
+      fontSize: '1.25rem',
+      fontWeight: 300,
+      color: abcWhite,
+    },
+    learnButton: {
+      color: abcBlue,
+      borderColor: abcBlue,
+      borderWidth: '2px',
+      textTransform: 'none',
+      borderRadius: '50px',
+      fontFamily: 'Roboto',
+      fontWeight: 'bold',
     },
   },
 });
