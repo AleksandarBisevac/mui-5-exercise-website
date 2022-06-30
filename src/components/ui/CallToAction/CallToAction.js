@@ -12,16 +12,20 @@ const CallToAction = () => {
   const theme = useTheme();
   return (
     <CallToActionWrapper theme={theme}>
-      <Grid container style={{ height: '60em' }} alignItems='center'>
+      <Grid container className='mainContainer'>
         <Grid item className={'absoluteContainer'}>
           <Grid container direction='column'>
             <Grid item>
-              <Typography variant='h2'>
+              <Typography variant='h2' className='text-center-md'>
                 Simple Software.
                 <br />
                 Revolutionary results.
               </Typography>
-              <Typography variant='subtitle2' style={{ fontSize: '1.5em' }}>
+              <Typography
+                variant='subtitle2'
+                style={{ fontSize: '1.5em' }}
+                className='text-center-md'
+              >
                 Take advantage of 21st century.
               </Typography>
               <Button variant='outlined' className={'learnButton'}>
@@ -42,6 +46,7 @@ const CallToAction = () => {
           background={background}
           mobileBackground={mobileBackground}
           theme={theme}
+          attachment='fixed'
         />
       </Grid>
     </CallToActionWrapper>
