@@ -5,6 +5,7 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import CallToAction from '../components/ui/CallToAction/CallToAction';
 //components custom
 import {
   BackgroundDiv,
@@ -352,6 +353,7 @@ const LandingPage = () => {
           </Grid>
         </Grid>
         {/*----- INFORMATION BLOCK END -----*/}
+        <CallToAction />
         {/*----- SERVICES SECTION END -----*/}
       </Grid>
     </LandingWrapper>
